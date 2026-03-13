@@ -11,3 +11,6 @@ prefetch/
 checkpoints/
 __pycache__
 .idea
+.venv/
+.vscode/
+

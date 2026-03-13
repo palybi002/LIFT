@@ -20,7 +20,7 @@ This repo is the official Pytorch implementation of [Rethinking Channel Dependen
 ## Scripts
 An example:
 ```bash
-python -u run_longExp.py --dataset Weather --model DLinear --lift --seq_len 336 --pred_len 96 --leader_num 4 --state_num 8 --learning_rate 0.0005
+python3 -u run_longExp.py --dataset Weather --model DLinear --lift --seq_len 336 --pred_len 96 --leader_num 4 --state_num 8 --learning_rate 0.0005
 ```
 
 The `scripts/` directory contains our scripts for re-experiments but does not cover all datasets. 

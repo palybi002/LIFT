@@ -235,9 +235,26 @@ class Exp_Main(Exp_Basic):
 
         self.model.eval()
         statistics = {k: 0 for k in ['total', 'y_sum', 'MSE', 'MAE']}
+        
+        # Calculate Params
+        total_params = sum(p.numel() for p in self.model.parameters())
+        print(f"Model Params: {total_params}")
+
+        # Measure Inference time
+        inference_times = []
+        
         with torch.no_grad():
             for i, batch in enumerate(test_loader):
+                batch = [d.to(self.device) if hasattr(d, 'to') else d for d in batch] # Ensure batch is moved
+                
+                # Timing
+                start_time = time.time()
                 outputs = self.forward(batch)
+                
+                # Warmup and record
+                if i > 5:
+                    inference_times.append(time.time() - start_time)
+                
                 true = batch[self.label_position]
                 if not self.args.pin_gpu:
                     true = true.to(self.device)
@@ -245,7 +262,27 @@ class Exp_Main(Exp_Basic):
 
         metrics = calculate_metrics(statistics)
         mse, mae = metrics['MSE'], metrics['MAE']
-        print('mse:{}, mae:{}'.format(mse, mae))
+        import math
+        rmse = math.sqrt(mse) if mse >= 0 else 0.0
+        print('mse:{}, mae:{}, rmse:{}'.format(mse, mae, rmse))
+        
+        # Avg Inference Time
+        if inference_times:
+            avg_inference_time = sum(inference_times) / len(inference_times)
+            print(f"Inference Time: {avg_inference_time:.6f} s/batch")
+        else:
+            print("Inference Time: N/A")
+
+        # Save results to file
+        result_dir = './results/'
+        if not os.path.exists(result_dir):
+            os.makedirs(result_dir)
+        
+        f = open(os.path.join(result_dir, "comparison_metrics.txt"), 'a')
+        f.write(setting + "  \n")
+        f.write(f'mse:{mse}, mae:{mae}, rmse:{rmse}, params:{total_params}, inference_time:{avg_inference_time if inference_times else "N/A"}\n\n')
+        f.close()
+
         return mse, mae, test_data, test_loader
 
     def predict(self, setting, load=False):

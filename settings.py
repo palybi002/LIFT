@@ -18,6 +18,7 @@ data_settings = {
     'Exchange': {'data': 'exchange_rate.csv', 'T':'OT', 'M':[8,8], 'prefetch_batch_size': 128},
     'exchange_rate': {'data': 'exchange_rate.csv', 'T':'OT', 'M':[8,8], 'prefetch_batch_size': 128},
     'Illness': {'data': 'illness.csv', 'T':'OT', 'M':[7,7], 'prefetch_batch_size': 128},
+    'AirQuality': {'data': 'AirQuality.csv', 'T': 'OT', 'M': [13, 13], 'S': [1, 1], 'MS': [13, 1], 'prefetch_batch_size': 32},
 }
 
 
@@ -26,6 +27,7 @@ hyperparams = {
     'MTGNN': {},
     'Crossformer': {'lradj': 'Crossformer', 'e_layers': 3, 'seg_len': 24, 'd_ff': 512, 'd_model': 256, 'n_heads': 4, 'dropout': 0.2},
     'DLinear': {},
+    'LACFNet': {'train_epochs': 10, 'learning_rate': 0.001, 'top_k': 3, 'dropout': 0.1},
     'GPT4TS': {'e_layers': 3, 'd_model': 768, 'n_heads': 4, 'd_ff': 768, 'dropout': 0.3, 'train_epochs': 10}
 }
 
