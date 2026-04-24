@@ -19,6 +19,7 @@ data_settings = {
     'exchange_rate': {'data': 'exchange_rate.csv', 'T':'OT', 'M':[8,8], 'prefetch_batch_size': 128},
     'Illness': {'data': 'illness.csv', 'T':'OT', 'M':[7,7], 'prefetch_batch_size': 128},
     'AirQuality': {'data': 'AirQuality.csv', 'T': 'OT', 'M': [13, 13], 'S': [1, 1], 'MS': [13, 1], 'prefetch_batch_size': 32},
+    'Sales': {'data': 'sales.csv', 'T': 'OT', 'M': [5, 5], 'S': [1, 1], 'MS': [5, 1], 'prefetch_batch_size': 32},
 }
 
 
