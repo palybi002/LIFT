@@ -39,7 +39,7 @@ parser.add_argument('--wo_test', action='store_true', default=False, help='only 
 parser.add_argument('--only_test', action='store_true', default=False)
 parser.add_argument('--model', type=str, required=True, default='Autoformer',
                     help='model name, options: [Autoformer, Informer, Transformer]')
-parser.add_argument('--override_hyper', action='store_true', default=True, help='Override hyperparams by setting.py')
+parser.add_argument('--override_hyper', type=str_to_bool, default=True, help='Override hyperparams by setting.py')
 parser.add_argument('--compile', action='store_true', default=False, help='Compile the model by Pytorch 2.0')
 parser.add_argument('--reduce_bs', type=str_to_bool, default=False, help='Override batch_size in hyperparams by setting.py')
 parser.add_argument('--normalization', type=str, default=None)
@@ -79,6 +79,9 @@ parser.add_argument('--temperature', type=float, default=1.0, help='softmax temp
 
 # DLinear
 parser.add_argument('--individual', action='store_true', default=False, help='DLinear: a linear layer for each variate(channel) individually')
+
+# LACFNet
+parser.add_argument('--top_k', type=int, default=3, help='LACFNet: number of top correlated channels')
 
 # PatchTST
 parser.add_argument('--fc_dropout', type=float, default=0.05, help='fully connected dropout')

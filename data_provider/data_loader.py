@@ -643,7 +643,7 @@ class Dataset_Lead_Stat(Dataset_Lead):
             return ts / std, mu, std
 
         const_indices = torch.arange(self.seq_len, self.seq_len + self.pred_len, dtype=torch.int, device=self.device).unsqueeze(0).unsqueeze(0)
-        self.prefetch_batch_size = self.prefetch_batch_size // 2
+        self.prefetch_batch_size = max(1, self.prefetch_batch_size // 2)
         for i in tqdm(range(0, len(self.dataset), self.prefetch_batch_size)):
             batch = [[], [], [], [], []]
             for _i in range(i, min(i+self.prefetch_batch_size, len(self.dataset))):
@@ -662,6 +662,13 @@ class Dataset_Lead_Stat(Dataset_Lead):
 
             delta.append((future_r - r_abs)[r_abs > self.threshold].view(-1).cpu())
             future_rs.append(future_r[r_abs > self.threshold].view(-1).cpu())
+        delta = [x for x in delta if x.numel() > 0]
+        future_rs = [x for x in future_rs if x.numel() > 0]
+
+        if not delta or not future_rs:
+            print('No valid prefetch stats above threshold; skip quantile report.')
+            return
+
         delta = torch.cat(delta, 0)
         future_rs = torch.cat(future_rs, 0).numpy()
         delta = np.sort(delta.numpy())

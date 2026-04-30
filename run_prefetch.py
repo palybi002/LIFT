@@ -114,7 +114,14 @@ if args.tag and args.tag[0] != '_':
 
 changes = collections.defaultdict(dict)
 corrs = collections.defaultdict(dict)
-for data_name in ['Weather', 'ECL', 'Traffic', 'PeMSD8', 'wind', 'Solar', 'ETTh1', 'ETTh2', 'ETTm1', 'ETTm2', 'Exchange', 'Illness']:
+
+default_datasets = ['Weather', 'ECL', 'Traffic', 'PeMSD8', 'wind', 'Solar', 'ETTh1', 'ETTh2', 'ETTm1', 'ETTm2', 'Exchange', 'Illness']
+if args.dataset in data_settings:
+    run_datasets = [args.dataset]
+else:
+    run_datasets = default_datasets
+
+for data_name in run_datasets:
     if data_name.startswith('ETT') or data_name.lower() in ['weather', 'wind', 'exchange', 'illness', 'ill']:
         args.efficient = False
         args.tag = '_acc'
